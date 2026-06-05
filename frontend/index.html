@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUXE — Premium Store</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- NOTIFICATION BAR -->
+  <div class="notif-bar">
+    <span>Free shipping on orders over $150 &nbsp;·&nbsp; New arrivals every Friday</span>
+  </div>
+
+  <!-- HEADER -->
+  <header id="header">
+    <nav class="nav">
+      <div class="nav-left">
+        <button class="nav-link" onclick="filterProducts('all')">All</button>
+        <button class="nav-link" onclick="filterProducts('clothing')">Clothing</button>
+        <button class="nav-link" onclick="filterProducts('accessories')">Accessories</button>
+        <button class="nav-link" onclick="filterProducts('home')">Home</button>
+      </div>
+      <div class="logo" onclick="scrollToTop()">LUXE</div>
+      <div class="nav-right">
+        <button class="icon-btn" onclick="toggleSearch()" title="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <button class="icon-btn" onclick="toggleWishlist()" title="Wishlist">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="badge" id="wishlist-badge">0</span>
+        </button>
+        <button class="icon-btn cart-icon-btn" onclick="toggleCart()" title="Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="badge" id="cart-badge">0</span>
+        </button>
+      </div>
+    </nav>
+    <!-- Search Bar -->
+    <div class="search-bar" id="search-bar">
+      <input type="text" id="search-input" placeholder="Search products…" oninput="searchProducts()" />
+      <button onclick="toggleSearch()">✕</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-label">New Collection 2026</p>
+      <h1 class="hero-title">Crafted for<br/><em>the discerning</em></h1>
+      <p class="hero-sub">Timeless pieces, ethical production, uncompromising quality.</p>
+      <button class="hero-cta" onclick="scrollToProducts()">Explore Collection</button>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- FEATURED CATEGORIES -->
+  <section class="categories-section">
+    <div class="categories-grid">
+      <div class="cat-card" onclick="filterProducts('clothing')">
+        <div class="cat-bg cat-1"></div>
+        <div class="cat-label">Clothing</div>
+      </div>
+      <div class="cat-card" onclick="filterProducts('accessories')">
+        <div class="cat-bg cat-2"></div>
+        <div class="cat-label">Accessories</div>
+      </div>
+      <div class="cat-card" onclick="filterProducts('home')">
+        <div class="cat-bg cat-3"></div>
+        <div class="cat-label">Home</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products-section" id="products">
+    <div class="section-header">
+      <h2 class="section-title" id="section-title">All Products</h2>
+      <div class="sort-bar">
+        <label>Sort by</label>
+        <select onchange="sortProducts(this.value)">
+          <option value="default">Featured</option>
+          <option value="price-asc">Price: Low → High</option>
+          <option value="price-desc">Price: High → Low</option>
+          <option value="name">Name A–Z</option>
+        </select>
+      </div>
+    </div>
+    <div class="products-grid" id="products-grid">
+      <!-- Injected by JS -->
+    </div>
+    <div class="empty-state" id="empty-state" style="display:none">
+      <p>No products found.</p>
+    </div>
+  </section>
+
+  <!-- MARQUEE STRIP -->
+  <div class="marquee-strip">
+    <div class="marquee-track">
+      <span>Free Returns &nbsp;·&nbsp; Ethical Manufacturing &nbsp;·&nbsp; Sustainable Materials &nbsp;·&nbsp; 2-Year Guarantee &nbsp;·&nbsp; Free Returns &nbsp;·&nbsp; Ethical Manufacturing &nbsp;·&nbsp; Sustainable Materials &nbsp;·&nbsp; 2-Year Guarantee &nbsp;·&nbsp;</span>
+      <span>Free Returns &nbsp;·&nbsp; Ethical Manufacturing &nbsp;·&nbsp; Sustainable Materials &nbsp;·&nbsp; 2-Year Guarantee &nbsp;·&nbsp; Free Returns &nbsp;·&nbsp; Ethical Manufacturing &nbsp;·&nbsp; Sustainable Materials &nbsp;·&nbsp; 2-Year Guarantee &nbsp;·&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter-section">
+    <div class="newsletter-inner">
+      <h3>Stay in the loop</h3>
+      <p>New arrivals, exclusive offers, and curated edits — straight to your inbox.</p>
+      <div class="newsletter-form">
+        <input type="email" id="email-input" placeholder="your@email.com" />
+        <button onclick="subscribeNewsletter()">Subscribe</button>
+      </div>
+      <p class="newsletter-note" id="newsletter-msg"></p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">LUXE</div>
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Sustainability</a>
+        <a href="#">Contact</a>
+        <a href="#">Returns</a>
+        <a href="#">Privacy</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 LUXE. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- CART SIDEBAR -->
+  <div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+  <aside class="cart-sidebar" id="cart-sidebar">
+    <div class="sidebar-header">
+      <h3>Your Cart</h3>
+      <button onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <div class="empty-cart">Your cart is empty.</div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cart-total">$0.00</span>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+    </div>
+  </aside>
+
+  <!-- WISHLIST SIDEBAR -->
+  <aside class="cart-sidebar wishlist-sidebar" id="wishlist-sidebar">
+    <div class="sidebar-header">
+      <h3>Wishlist</h3>
+      <button onclick="toggleWishlist()">✕</button>
+    </div>
+    <div class="cart-items" id="wishlist-items">
+      <div class="empty-cart">Your wishlist is empty.</div>
+    </div>
+  </aside>
+
+  <!-- PRODUCT MODAL -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+  <div class="product-modal" id="product-modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
