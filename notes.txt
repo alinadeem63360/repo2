@@ -1,2 +1,2 @@
 1: wishlist not working properly items are shifted to cart
-ask chatgpt create a skill for me as a full stack develepore
+ask chatgpt create a skill md file for me as a full stack develepore

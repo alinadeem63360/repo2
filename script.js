@@ -1,494 +1,767 @@
-// ─── PRODUCT DATA ─────────────────────────────────────────────────
+
+// PRODUCT DATA
 const PRODUCTS = [
   {
-    id: 1, name: 'Silk Wrap Blouse', category: 'clothing',
-    price: 220, oldPrice: null, emoji: '👘',
-    tag: 'new', sizes: ['XS','S','M','L','XL'],
-    desc: 'Hand-finished in a Florence atelier, this silk wrap blouse drapes effortlessly over the body. Crafted from 100% Mulberry silk with mother-of-pearl buttons.'
+    id: 1,
+    name: 'Silk Wrap Blouse',
+    category: 'clothing',
+    price: 220,
+    oldPrice: null,
+    emoji: '👘',
+    tag: 'new',
+    desc: 'Luxury handcrafted silk wrap blouse.'
   },
   {
-    id: 2, name: 'Wool Overcoat', category: 'clothing',
-    price: 580, oldPrice: 720, emoji: '🧥',
-    tag: 'sale', sizes: ['XS','S','M','L','XL','XXL'],
-    desc: 'A structured overcoat in double-faced Italian wool. Notch lapels, slit pockets, and a single vent for ease of movement. Fully lined in silk crepe.'
+    id: 2,
+    name: 'Wool Overcoat',
+    category: 'clothing',
+    price: 580,
+    oldPrice: 720,
+    emoji: '🧥',
+    tag: 'sale',
+    desc: 'Premium Italian wool overcoat.'
   },
   {
-    id: 3, name: 'Linen Trousers', category: 'clothing',
-    price: 185, oldPrice: null, emoji: '👖',
-    tag: null, sizes: ['XS','S','M','L','XL'],
-    desc: 'Wide-leg trousers in stone-washed Belgian linen. An elasticated waist ensures effortless comfort without sacrificing elegance.'
+    id: 3,
+    name: 'Leather Tote',
+    category: 'accessories',
+    price: 460,
+    oldPrice: 540,
+    emoji: '👜',
+    tag: 'sale',
+    desc: 'Full grain leather tote bag.'
   },
   {
-    id: 4, name: 'Cashmere Knit', category: 'clothing',
-    price: 310, oldPrice: null, emoji: '🧶',
-    tag: 'new', sizes: ['S','M','L'],
-    desc: 'A two-ply cashmere rollneck, knitted in the Scottish Highlands. Relaxed fit with ribbed cuffs and hem. Available in four seasonal tones.'
+    id: 4,
+    name: 'Gold Cuff',
+    category: 'accessories',
+    price: 275,
+    oldPrice: null,
+    emoji: '📿',
+    tag: 'new',
+    desc: 'Minimal sculpted gold cuff.'
   },
   {
-    id: 5, name: 'Leather Tote', category: 'accessories',
-    price: 460, oldPrice: 540, emoji: '👜',
-    tag: 'sale', sizes: null,
-    desc: 'Full-grain vegetable-tanned leather tote with a natural patina. Unlined interior with a zip pocket and brass hardware. Develops character with use.'
+    id: 5,
+    name: 'Ceramic Vase',
+    category: 'home',
+    price: 88,
+    oldPrice: null,
+    emoji: '🏺',
+    tag: null,
+    desc: 'Modern handmade ceramic vase.'
   },
   {
-    id: 6, name: 'Silk Scarf', category: 'accessories',
-    price: 145, oldPrice: null, emoji: '🧣',
-    tag: null, sizes: null,
-    desc: 'A generous 90×90cm twill silk scarf, hand-rolled at the edges. Features a watercolour botanical print exclusive to LUXE.'
-  },
-  {
-    id: 7, name: 'Straw Hat', category: 'accessories',
-    price: 95, oldPrice: null, emoji: '👒',
-    tag: 'new', sizes: ['S/M','L/XL'],
-    desc: 'Handwoven in Ecuador from toquilla straw. A classic Fedora shape with a grosgrain ribbon band. Lightweight, packable, iconic.'
-  },
-  {
-    id: 8, name: 'Gold Cuff', category: 'accessories',
-    price: 275, oldPrice: null, emoji: '📿',
-    tag: null, sizes: null,
-    desc: 'A sculptural cuff cast in 18k gold-plated brass. The organic form references tidal pooling — each piece slightly unique from the casting.'
-  },
-  {
-    id: 9, name: 'Linen Throw', category: 'home',
-    price: 155, oldPrice: 190, emoji: '🛋️',
-    tag: 'sale', sizes: null,
-    desc: 'A generously sized throw woven from stonewashed linen in a natural herringbone. Pre-washed for immediate softness, only improves over time.'
-  },
-  {
-    id: 10, name: 'Ceramic Vase', category: 'home',
-    price: 88, oldPrice: null, emoji: '🏺',
-    tag: null, sizes: null,
-    desc: 'Hand-thrown stoneware vase with a reactive ash glaze. Each piece is unique — the glaze shifts from ash-grey to warm amber depending on the light.'
-  },
-  {
-    id: 11, name: 'Soy Candle Set', category: 'home',
-    price: 65, oldPrice: null, emoji: '🕯️',
-    tag: 'new', sizes: null,
-    desc: 'A trio of hand-poured soy candles in hand-blown glass vessels. Fragrances: Fig & Cedar, White Tea, and Vetiver & Moss. 45-hour burn time each.'
-  },
-  {
-    id: 12, name: 'Merino Pillow', category: 'home',
-    price: 120, oldPrice: null, emoji: '🛏️',
-    tag: null, sizes: null,
-    desc: 'A 50×50cm cushion cover in superfine Merino wool with a concealed zip. The subtly textured weave adds warmth and depth to any interior.'
-  },
+    id: 6,
+    name: 'Soy Candle Set',
+    category: 'home',
+    price: 65,
+    oldPrice: null,
+    emoji: '🕯️',
+    tag: 'new',
+    desc: 'Luxury scented soy candles.'
+  }
 ];
 
-// ─── STATE ────────────────────────────────────────────────────────
-let cart = JSON.parse(localStorage.getItem('luxe_cart') || '[]');
-let wishlist = JSON.parse(localStorage.getItem('luxe_wish') || '[]');
+// STATE
+let cart = JSON.parse(localStorage.getItem('luxe_cart')) || [];
+let wishlist = JSON.parse(localStorage.getItem('luxe_wishlist')) || [];
+
 let currentFilter = 'all';
 let currentSort = 'default';
-let filteredProducts = [...PRODUCTS];
-let currentModal = null;
 
-// ─── INIT ─────────────────────────────────────────────────────────
+// INIT
 document.addEventListener('DOMContentLoaded', () => {
   renderProducts();
   updateBadges();
-  setupScrollHeader();
-  animateOnScroll();
 });
 
-// ─── SCROLL HEADER ────────────────────────────────────────────────
-function setupScrollHeader() {
-  window.addEventListener('scroll', () => {
-    const header = document.getElementById('header');
-    if (window.scrollY > 60) header.classList.add('scrolled');
-    else header.classList.remove('scrolled');
-  });
-}
-
-// ─── SCROLL ANIMATIONS ────────────────────────────────────────────
-function animateOnScroll() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.cat-card, .newsletter-section').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(24px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(el);
-  });
-}
-
-// ─── RENDER PRODUCTS ──────────────────────────────────────────────
+// PRODUCTS
 function renderProducts() {
+
   const grid = document.getElementById('products-grid');
   const empty = document.getElementById('empty-state');
 
-  const items = getFiltered();
-  grid.innerHTML = '';
+  let products = [...PRODUCTS];
 
-  if (items.length === 0) {
-    empty.style.display = 'flex';
-    empty.style.flexDirection = 'column';
-    empty.style.alignItems = 'center';
-    return;
-  }
-  empty.style.display = 'none';
-
-  items.forEach((p, i) => {
-    const inWish = wishlist.includes(p.id);
-    const card = document.createElement('div');
-    card.className = 'product-card';
-    card.style.animationDelay = `${i * 0.06}s`;
-    card.innerHTML = `
-      <div class="product-img-wrap" onclick="openModal(${p.id})">
-        ${p.tag ? `<div class="product-tag ${p.tag}">${p.tag}</div>` : ''}
-        <div class="product-img-placeholder">${p.emoji}</div>
-        <div class="product-actions">
-          <button class="action-btn add-cart" onclick="event.stopPropagation(); addToCart(${p.id})">Add to Cart</button>
-          <button class="action-btn add-wish ${inWish ? 'wished' : ''}" onclick="event.stopPropagation(); toggleWishlistItem(${p.id}, this)" title="Wishlist">
-            ${inWish ? '♥' : '♡'}
-          </button>
-        </div>
-      </div>
-      <div class="product-info" onclick="openModal(${p.id})">
-        <div class="product-category">${p.category}</div>
-        <div class="product-name">${p.name}</div>
-        <div class="product-price-row">
-          <span class="product-price">$${p.price.toFixed(2)}</span>
-          ${p.oldPrice ? `<span class="product-price-old">$${p.oldPrice.toFixed(2)}</span>` : ''}
-        </div>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-}
-
-function getFiltered() {
-  let items = currentFilter === 'all'
-    ? [...PRODUCTS]
-    : PRODUCTS.filter(p => p.category === currentFilter);
-
-  if (document.getElementById('search-input') &&
-      document.getElementById('search-input').value.trim()) {
-    const q = document.getElementById('search-input').value.trim().toLowerCase();
-    items = items.filter(p =>
-      p.name.toLowerCase().includes(q) ||
-      p.category.toLowerCase().includes(q) ||
-      p.desc.toLowerCase().includes(q)
+  // filter
+  if(currentFilter !== 'all'){
+    products = products.filter(
+      p => p.category === currentFilter
     );
   }
 
-  switch (currentSort) {
-    case 'price-asc':  items.sort((a, b) => a.price - b.price); break;
-    case 'price-desc': items.sort((a, b) => b.price - a.price); break;
-    case 'name':       items.sort((a, b) => a.name.localeCompare(b.name)); break;
+  // search
+  const query = document
+    .getElementById('search-input')
+    .value
+    .trim()
+    .toLowerCase();
+
+  if(query){
+    products = products.filter(p =>
+      p.name.toLowerCase().includes(query) ||
+      p.category.toLowerCase().includes(query)
+    );
   }
 
-  return items;
-}
+  // sort
+  switch(currentSort){
 
-// ─── FILTER & SORT ────────────────────────────────────────────────
-function filterProducts(cat) {
-  currentFilter = cat;
-  const titles = { all: 'All Products', clothing: 'Clothing', accessories: 'Accessories', home: 'Home' };
-  document.getElementById('section-title').textContent = titles[cat];
+    case 'price-asc':
+      products.sort((a,b)=>a.price-b.price);
+      break;
 
-  document.querySelectorAll('.nav-link').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.toLowerCase() === cat || (cat === 'all' && btn.textContent === 'All'));
+    case 'price-desc':
+      products.sort((a,b)=>b.price-a.price);
+      break;
+
+    case 'name':
+      products.sort((a,b)=>
+        a.name.localeCompare(b.name)
+      );
+      break;
+  }
+
+  grid.innerHTML = '';
+
+  if(products.length === 0){
+    empty.style.display = 'block';
+    return;
+  }
+
+  empty.style.display = 'none';
+
+  products.forEach(product => {
+
+    const wished = wishlist.includes(product.id);
+
+    const card = document.createElement('div');
+    card.className = 'product-card';
+
+    card.innerHTML = `
+      <div class="product-img-wrap">
+
+        ${product.tag
+          ? `<div class="product-tag ${product.tag}">
+              ${product.tag}
+            </div>`
+          : ''
+        }
+
+        <div class="product-img-placeholder">
+          ${product.emoji}
+        </div>
+
+        <div class="product-actions">
+
+          <button
+            class="action-btn add-cart"
+            onclick="addToCart(${product.id})"
+          >
+            Add to Cart
+          </button>
+
+          <button
+            class="action-btn add-wish"
+            onclick="toggleWishlistItem(${product.id})"
+          >
+            ${wished ? '♥' : '♡'}
+          </button>
+
+        </div>
+
+      </div>
+
+      <div
+        class="product-info"
+        onclick="openModal(${product.id})"
+      >
+
+        <div class="product-category">
+          ${product.category}
+        </div>
+
+        <div class="product-name">
+          ${product.name}
+        </div>
+
+        <div class="product-price-row">
+
+          <div class="product-price">
+            $${product.price}
+          </div>
+
+          ${
+            product.oldPrice
+            ? `<div class="product-price-old">
+                $${product.oldPrice}
+              </div>`
+            : ''
+          }
+
+        </div>
+
+      </div>
+    `;
+
+    grid.appendChild(card);
+
   });
 
-  renderProducts();
-  scrollToProducts();
 }
 
-function sortProducts(val) {
-  currentSort = val;
-  renderProducts();
-}
+// FILTER
+function filterProducts(category, btn){
 
-function searchProducts() {
-  renderProducts();
-}
+  currentFilter = category;
 
-// ─── CART ─────────────────────────────────────────────────────────
-function addToCart(id) {
-  const existing = cart.find(i => i.id === id);
-  if (existing) {
-    existing.qty++;
-  } else {
-    cart.push({ id, qty: 1 });
+  const titles = {
+    all:'All Products',
+    clothing:'Clothing',
+    accessories:'Accessories',
+    home:'Home'
+  };
+
+  document.getElementById('section-title')
+    .textContent = titles[category];
+
+  document
+    .querySelectorAll('.nav-link')
+    .forEach(link => link.classList.remove('active'));
+
+  if(btn){
+    btn.classList.add('active');
   }
-  saveCart();
-  updateBadges();
-  renderCartItems();
-  showToast('Added to cart ✓');
+
+  renderProducts();
+
+  scrollToProducts();
+
 }
 
-function removeFromCart(id) {
-  cart = cart.filter(i => i.id !== id);
-  saveCart();
-  updateBadges();
-  renderCartItems();
+// SORT
+function sortProducts(value){
+  currentSort = value;
+  renderProducts();
 }
 
-function changeQty(id, delta) {
+// SEARCH
+function searchProducts(){
+  renderProducts();
+}
+
+// CART
+function addToCart(id){
+
+  const existing = cart.find(item => item.id === id);
+
+  if(existing){
+    existing.qty++;
+  }else{
+    cart.push({
+      id,
+      qty:1
+    });
+  }
+
+  saveCart();
+
+  renderCartItems();
+
+  updateBadges();
+
+  showToast('Added to cart');
+
+}
+
+function removeFromCart(id){
+
+  cart = cart.filter(item => item.id !== id);
+
+  saveCart();
+
+  renderCartItems();
+
+  updateBadges();
+
+}
+
+function changeQty(id, amount){
+
   const item = cart.find(i => i.id === id);
-  if (!item) return;
-  item.qty += delta;
-  if (item.qty <= 0) { removeFromCart(id); return; }
+
+  if(!item) return;
+
+  item.qty += amount;
+
+  if(item.qty <= 0){
+    removeFromCart(id);
+    return;
+  }
+
   saveCart();
-  updateBadges();
+
   renderCartItems();
+
+  updateBadges();
+
 }
 
-function renderCartItems() {
-  const el = document.getElementById('cart-items');
+function renderCartItems(){
+
+  const container = document.getElementById('cart-items');
   const totalEl = document.getElementById('cart-total');
 
-  if (cart.length === 0) {
-    el.innerHTML = '<div class="empty-cart">Your cart is empty.</div>';
+  if(cart.length === 0){
+
+    container.innerHTML = `
+      <div class="empty-state">
+        Your cart is empty.
+      </div>
+    `;
+
     totalEl.textContent = '$0.00';
+
     return;
+
   }
 
   let total = 0;
-  el.innerHTML = cart.map(item => {
-    const p = PRODUCTS.find(x => x.id === item.id);
-    total += p.price * item.qty;
+
+  container.innerHTML = cart.map(item => {
+
+    const product = PRODUCTS.find(p => p.id === item.id);
+
+    total += product.price * item.qty;
+
     return `
       <div class="cart-item">
-        <div class="cart-item-emoji">${p.emoji}</div>
+
+        <div class="cart-item-emoji">
+          ${product.emoji}
+        </div>
+
         <div class="cart-item-info">
-          <div class="cart-item-name">${p.name}</div>
-          <div class="cart-item-price">$${(p.price * item.qty).toFixed(2)}</div>
+
+          <div class="cart-item-name">
+            ${product.name}
+          </div>
+
+          <div>
+            $${product.price}
+          </div>
+
         </div>
+
         <div class="cart-item-controls">
-          <button class="qty-btn" onclick="changeQty(${p.id}, -1)">−</button>
-          <span class="qty-num">${item.qty}</span>
-          <button class="qty-btn" onclick="changeQty(${p.id}, +1)">+</button>
-          <button class="remove-btn" onclick="removeFromCart(${p.id})">×</button>
+
+          <button
+            class="qty-btn"
+            onclick="changeQty(${product.id}, -1)"
+          >
+            -
+          </button>
+
+          <span>${item.qty}</span>
+
+          <button
+            class="qty-btn"
+            onclick="changeQty(${product.id}, 1)"
+          >
+            +
+          </button>
+
         </div>
+
       </div>
     `;
+
   }).join('');
 
   totalEl.textContent = '$' + total.toFixed(2);
+
 }
 
-function saveCart() {
-  localStorage.setItem('luxe_cart', JSON.stringify(cart));
-}
+// WISHLIST
+function toggleWishlistItem(id){
 
-// ─── WISHLIST ─────────────────────────────────────────────────────
-function toggleWishlistItem(id, btn) {
-  if (wishlist.includes(id)) {
+  if(wishlist.includes(id)){
+
     wishlist = wishlist.filter(x => x !== id);
-    if (btn) { btn.textContent = '♡'; btn.classList.remove('wished'); }
+
     showToast('Removed from wishlist');
-  } else {
+
+  }else{
+
     wishlist.push(id);
-    if (btn) { btn.textContent = '♥'; btn.classList.add('wished'); }
-    showToast('Saved to wishlist ♥');
+
+    showToast('Added to wishlist');
+
   }
-  localStorage.setItem('luxe_wish', JSON.stringify(wishlist));
+
+  localStorage.setItem(
+    'luxe_wishlist',
+    JSON.stringify(wishlist)
+  );
+
   updateBadges();
+
   renderWishlistItems();
+
+  renderProducts();
+
 }
 
-function renderWishlistItems() {
-  const el = document.getElementById('wishlist-items');
-  if (wishlist.length === 0) {
-    el.innerHTML = '<div class="empty-cart">Your wishlist is empty.</div>';
-    return;
-  }
-  el.innerHTML = wishlist.map(id => {
-    const p = PRODUCTS.find(x => x.id === id);
-    return `
-      <div class="cart-item">
-        <div class="cart-item-emoji">${p.emoji}</div>
-        <div class="cart-item-info">
-          <div class="cart-item-name">${p.name}</div>
-          <div class="cart-item-price">$${p.price.toFixed(2)}</div>
-        </div>
-        <button class="action-btn add-cart" style="font-size:10px;padding:8px 12px;white-space:nowrap" onclick="addToCart(${p.id})">Add to Cart</button>
-        <button class="remove-btn" onclick="toggleWishlistItem(${p.id})">×</button>
+function renderWishlistItems(){
+
+  const container = document.getElementById('wishlist-items');
+
+  if(wishlist.length === 0){
+
+    container.innerHTML = `
+      <div class="empty-state">
+        Wishlist is empty.
       </div>
     `;
+
+    return;
+
+  }
+
+  container.innerHTML = wishlist.map(id => {
+
+    const product = PRODUCTS.find(p => p.id === id);
+
+    return `
+      <div class="cart-item">
+
+        <div class="cart-item-emoji">
+          ${product.emoji}
+        </div>
+
+        <div class="cart-item-info">
+
+          <div class="cart-item-name">
+            ${product.name}
+          </div>
+
+          <div>
+            $${product.price}
+          </div>
+
+        </div>
+
+      </div>
+    `;
+
   }).join('');
+
 }
 
-// ─── BADGES ───────────────────────────────────────────────────────
-function updateBadges() {
-  const cartCount = cart.reduce((acc, i) => acc + i.qty, 0);
-  const wishCount = wishlist.length;
+// BADGES
+function updateBadges(){
 
-  const cartBadge = document.getElementById('cart-badge');
-  const wishBadge = document.getElementById('wishlist-badge');
+  const cartCount = cart.reduce(
+    (sum,item)=>sum + item.qty,
+    0
+  );
+
+  const wishlistCount = wishlist.length;
+
+  const cartBadge =
+    document.getElementById('cart-badge');
+
+  const wishlistBadge =
+    document.getElementById('wishlist-badge');
 
   cartBadge.textContent = cartCount;
-  wishBadge.textContent = wishCount;
-  cartBadge.classList.toggle('visible', cartCount > 0);
-  wishBadge.classList.toggle('visible', wishCount > 0);
+  wishlistBadge.textContent = wishlistCount;
+
+  cartBadge.classList.toggle(
+    'visible',
+    cartCount > 0
+  );
+
+  wishlistBadge.classList.toggle(
+    'visible',
+    wishlistCount > 0
+  );
+
 }
 
-// ─── TOGGLES ──────────────────────────────────────────────────────
-function toggleCart() {
-  const sidebar = document.getElementById('cart-sidebar');
-  const wishSidebar = document.getElementById('wishlist-sidebar');
-  const overlay = document.getElementById('overlay');
-  const isOpen = sidebar.classList.contains('open');
-
-  wishSidebar.classList.remove('open');
-  sidebar.classList.toggle('open', !isOpen);
-  overlay.classList.toggle('visible', !isOpen);
-
-  if (!isOpen) renderCartItems();
+// SAVE
+function saveCart(){
+  localStorage.setItem(
+    'luxe_cart',
+    JSON.stringify(cart)
+  );
 }
 
-function toggleWishlist() {
-  const sidebar = document.getElementById('wishlist-sidebar');
-  const cartSidebar = document.getElementById('cart-sidebar');
-  const overlay = document.getElementById('overlay');
-  const isOpen = sidebar.classList.contains('open');
+// SIDEBARS
+function toggleCart(){
+
+  const sidebar =
+    document.getElementById('cart-sidebar');
+
+  const overlay =
+    document.getElementById('overlay');
+
+  const wishlistSidebar =
+    document.getElementById('wishlist-sidebar');
+
+  wishlistSidebar.classList.remove('open');
+
+  sidebar.classList.toggle('open');
+
+  overlay.classList.toggle(
+    'visible',
+    sidebar.classList.contains('open')
+  );
+
+  renderCartItems();
+
+}
+
+function toggleWishlist(){
+
+  const sidebar =
+    document.getElementById('wishlist-sidebar');
+
+  const overlay =
+    document.getElementById('overlay');
+
+  const cartSidebar =
+    document.getElementById('cart-sidebar');
 
   cartSidebar.classList.remove('open');
-  sidebar.classList.toggle('open', !isOpen);
-  overlay.classList.toggle('visible', !isOpen);
 
-  if (!isOpen) renderWishlistItems();
+  sidebar.classList.toggle('open');
+
+  overlay.classList.toggle(
+    'visible',
+    sidebar.classList.contains('open')
+  );
+
+  renderWishlistItems();
+
 }
 
-function toggleSearch() {
-  const bar = document.getElementById('search-bar');
-  bar.classList.toggle('open');
-  if (bar.classList.contains('open')) {
-    setTimeout(() => document.getElementById('search-input').focus(), 50);
-  } else {
-    document.getElementById('search-input').value = '';
-    renderProducts();
-  }
+function closeAll(){
+
+  document
+    .querySelectorAll('.sidebar')
+    .forEach(sidebar =>
+      sidebar.classList.remove('open')
+    );
+
+  document
+    .getElementById('overlay')
+    .classList.remove('visible');
+
 }
 
-function closeAll() {
-  document.getElementById('cart-sidebar').classList.remove('open');
-  document.getElementById('wishlist-sidebar').classList.remove('open');
-  document.getElementById('overlay').classList.remove('visible');
+// SEARCH TOGGLE
+function toggleSearch(){
+
+  document
+    .getElementById('search-wrapper')
+    .classList.toggle('open');
+
 }
 
-// ─── PRODUCT MODAL ────────────────────────────────────────────────
-function openModal(id) {
-  const p = PRODUCTS.find(x => x.id === id);
-  currentModal = p;
+// MOBILE MENU
+function toggleMobileMenu(){
+
+  document
+    .getElementById('mobile-nav')
+    .classList.toggle('open');
+
+}
+
+// MODAL
+function openModal(id){
+
+  const product = PRODUCTS.find(p => p.id === id);
 
   const body = document.getElementById('modal-body');
-  const inWish = wishlist.includes(p.id);
 
   body.innerHTML = `
-    <div class="modal-img-wrap">${p.emoji}</div>
-    <div class="modal-info">
-      <div class="modal-category">${p.category}</div>
-      <h2 class="modal-name">${p.name}</h2>
-      <div class="modal-price">
-        $${p.price.toFixed(2)}
-        ${p.oldPrice ? `<span class="modal-price-old">$${p.oldPrice.toFixed(2)}</span>` : ''}
+    <div class="modal-body">
+
+      <div class="modal-img-wrap">
+        ${product.emoji}
       </div>
-      <p class="modal-desc">${p.desc}</p>
-      ${p.sizes ? `
-      <div class="modal-sizes">
-        <label>Select Size</label>
-        <div class="size-options">
-          ${p.sizes.map(s => `<button class="size-btn" onclick="selectSize(this)">${s}</button>`).join('')}
+
+      <div class="modal-info">
+
+        <div class="modal-category">
+          ${product.category}
         </div>
-      </div>` : ''}
-      <div class="modal-actions">
-        <button class="modal-add-cart" onclick="addToCart(${p.id}); closeModal()">Add to Cart</button>
-        <button class="modal-wish-btn" onclick="toggleWishlistItem(${p.id}, null); updateModalWish(this, ${p.id})">${inWish ? '♥' : '♡'}</button>
+
+        <h2 class="modal-name">
+          ${product.name}
+        </h2>
+
+        <div class="modal-price">
+          $${product.price}
+        </div>
+
+        <p class="modal-desc">
+          ${product.desc}
+        </p>
+
+        <div class="modal-actions">
+
+          <button
+            class="modal-add-cart"
+            onclick="addToCart(${product.id})"
+          >
+            Add to Cart
+          </button>
+
+          <button
+            class="modal-wish-btn"
+            onclick="toggleWishlistItem(${product.id})"
+          >
+            ♥
+          </button>
+
+        </div>
+
       </div>
+
     </div>
   `;
 
-  document.getElementById('modal-overlay').classList.add('visible');
-  document.getElementById('product-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  document
+    .getElementById('modal-overlay')
+    .classList.add('visible');
+
+  document
+    .getElementById('product-modal')
+    .classList.add('open');
+
 }
 
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('visible');
-  document.getElementById('product-modal').classList.remove('open');
-  document.body.style.overflow = '';
-  currentModal = null;
-  renderProducts(); // refresh wish states on cards
+function closeModal(){
+
+  document
+    .getElementById('modal-overlay')
+    .classList.remove('visible');
+
+  document
+    .getElementById('product-modal')
+    .classList.remove('open');
+
 }
 
-function selectSize(btn) {
-  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-}
+// NEWSLETTER
+function subscribeNewsletter(){
 
-function updateModalWish(btn, id) {
-  btn.textContent = wishlist.includes(id) ? '♥' : '♡';
-}
+  const input =
+    document.getElementById('email-input');
 
-// ─── NEWSLETTER ───────────────────────────────────────────────────
-function subscribeNewsletter() {
-  const input = document.getElementById('email-input');
-  const msg   = document.getElementById('newsletter-msg');
-  const val   = input.value.trim();
+  const message =
+    document.getElementById('newsletter-msg');
 
-  if (!val || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
-    msg.style.color = 'var(--red)';
-    msg.textContent = 'Please enter a valid email address.';
+  const email = input.value.trim();
+
+  const valid =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  if(!valid){
+
+    message.textContent =
+      'Please enter a valid email address';
+
     return;
+
   }
 
-  msg.style.color = 'var(--accent2)';
-  msg.textContent = '✓ Thank you! You\'re on the list.';
+  message.textContent =
+    'Successfully subscribed ✓';
+
   input.value = '';
-  setTimeout(() => msg.textContent = '', 4000);
+
 }
 
-// ─── CHECKOUT ─────────────────────────────────────────────────────
-function checkout() {
-  if (cart.length === 0) {
-    showToast('Your cart is empty');
+// CHECKOUT
+function checkout(){
+
+  if(cart.length === 0){
+
+    showToast('Cart is empty');
+
     return;
+
   }
-  const total = cart.reduce((sum, i) => {
-    const p = PRODUCTS.find(x => x.id === i.id);
-    return sum + p.price * i.qty;
-  }, 0);
+
+  showToast('Order placed successfully ✓');
+
+  cart = [];
+
+  saveCart();
+
+  renderCartItems();
+
+  updateBadges();
 
   closeAll();
-  showToast(`Order placed! Total: $${total.toFixed(2)} ✓`);
-  cart = [];
-  saveCart();
-  updateBadges();
-  renderCartItems();
+
 }
 
-// ─── TOAST ────────────────────────────────────────────────────────
+// TOAST
 let toastTimer;
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
+
+function showToast(message){
+
+  const toast =
+    document.getElementById('toast');
+
+  toast.textContent = message;
+
   toast.classList.add('show');
+
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+
+  toastTimer = setTimeout(() => {
+
+    toast.classList.remove('show');
+
+  }, 2400);
+
 }
 
-// ─── UTILS ────────────────────────────────────────────────────────
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+// UTILS
+function scrollToTop(){
+
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+
 }
 
-function scrollToProducts() {
-  document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
+function scrollToProducts(){
+
+  document
+    .getElementById('products')
+    .scrollIntoView({
+      behavior:'smooth'
+    });
+
 }
 
-// Keyboard: Escape closes
+// ESC
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    if (document.getElementById('product-modal').classList.contains('open')) closeModal();
-    else closeAll();
+
+  if(e.key === 'Escape'){
+
+    closeModal();
+
+    closeAll();
+
   }
+
 });
